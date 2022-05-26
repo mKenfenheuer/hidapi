@@ -230,13 +230,15 @@ static HANDLE open_device(const char *path, BOOL enumerate)
 	HANDLE handle;
 	DWORD desired_access = (enumerate)? 0: (GENERIC_WRITE | GENERIC_READ);
 	DWORD share_mode = FILE_SHARE_READ|FILE_SHARE_WRITE;
+	// Remove extra buffering
+	DWORD flags = FILE_FLAG_OVERLAPPED | FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH | FILE_ATTRIBUTE_TEMPORARY;
 
 	handle = CreateFileA(path,
 		desired_access,
 		share_mode,
 		NULL,
 		OPEN_EXISTING,
-		FILE_FLAG_OVERLAPPED,/*FILE_ATTRIBUTE_NORMAL,*/
+		flags,
 		0);
 
 	return handle;
